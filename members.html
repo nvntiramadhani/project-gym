@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Data Anggota - FitPro Gym Management System">
+    <title>Data Anggota - Novi Prime Athletics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="bi bi-trophy-fill"></i></div>
+            <div><span class="brand-text">Gym Management</span><span class="brand-subtitle">Novi Prime Athletics</span></div>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-label">Menu Utama</div>
+            <a href="dashboard.html" class="nav-link"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+            <a href="members.html" class="nav-link active"><i class="bi bi-people-fill"></i> Data Anggota</a>
+            <a href="packages.html" class="nav-link"><i class="bi bi-box-seam-fill"></i> Paket Membership</a>
+            <a href="attendance.html" class="nav-link"><i class="bi bi-calendar-check-fill"></i> Presensi</a>
+            <a href="trainers.html" class="nav-link"><i class="bi bi-person-badge-fill"></i> Personal Trainer</a>
+            <div class="menu-label">Lainnya</div>
+            <a href="#" class="nav-link" onclick="alert('Fitur laporan akan segera hadir.')"><i class="bi bi-file-earmark-bar-graph-fill"></i> Laporan</a>
+            <a href="#" class="nav-link" onclick="alert('Fitur pengaturan akan segera hadir.')"><i class="bi bi-gear-fill"></i> Pengaturan</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="index.html" class="nav-link"><i class="bi bi-box-arrow-left"></i> Logout</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                <h1 class="page-title">Data Anggota</h1>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn-icon" onclick="alert('Tidak ada notifikasi baru.')"><i class="bi bi-bell"></i><span class="badge-dot"></span></button>
+                <div class="user-dropdown" data-bs-toggle="dropdown"><div class="user-avatar">A</div><div class="user-info d-none d-sm-block"><div class="user-name">Admin</div><div class="user-role">Administrator</div></div></div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" onclick="alert('Profil')"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="index.html"><i class="bi bi-box-arrow-left me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="d-flex gap-3 align-items-center flex-wrap">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="searchMember" placeholder="Cari anggota..." onkeyup="filterMembers()">
+                    </div>
+                    <select class="form-select form-select-sm" style="width:auto" id="filterPaket" onchange="filterMembers()">
+                        <option value="">Semua Paket</option>
+                        <option value="gold">Gold</option>
+                        <option value="silver">Silver</option>
+                        <option value="platinum">Platinum</option>
+                    </select>
+                    <select class="form-select form-select-sm" style="width:auto" id="filterStatus" onchange="filterMembers()">
+                        <option value="">Semua Status</option>
+                        <option value="aktif">Aktif</option>
+                        <option value="expired">Expired</option>
+                    </select>
+                </div>
+                <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#memberModal" onclick="openAddModal()">
+                    <i class="bi bi-plus-lg"></i> Tambah Anggota
+                </button>
+            </div>
+
+            <!-- Table -->
+            <div class="card-custom">
+                <div class="card-body-custom p-0">
+                    <div class="table-responsive">
+                        <table class="table-custom" id="memberTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th><th>Anggota</th><th>Paket</th><th>Tanggal Join</th><th>Status</th><th style="width:140px">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-paket="gold" data-status="aktif">
+                                    <td>#M001</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#4361ee,#7b2ff7)">BS</div><div><div class="member-name">Budi Santoso</div><div class="member-email">budi@email.com</div></div></div></td>
+                                    <td><span class="badge-package gold">Gold</span></td>
+                                    <td>15 Jan 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M001','Budi Santoso','budi@email.com','gold','aktif','081234567890','Jl. Merdeka No. 10')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M001','Budi Santoso')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="platinum" data-status="aktif">
+                                    <td>#M002</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#00c897,#00b4d8)">RW</div><div><div class="member-name">Rina Wati</div><div class="member-email">rina@email.com</div></div></div></td>
+                                    <td><span class="badge-package platinum">Platinum</span></td>
+                                    <td>20 Feb 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M002','Rina Wati','rina@email.com','platinum','aktif','081234567891','Jl. Sudirman No. 5')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M002','Rina Wati')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="silver" data-status="expired">
+                                    <td>#M003</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#ff4757,#ff6b81)">AS</div><div><div class="member-name">Ahmad Surya</div><div class="member-email">ahmad@email.com</div></div></div></td>
+                                    <td><span class="badge-package silver">Silver</span></td>
+                                    <td>05 Mar 2026</td>
+                                    <td><span class="badge-status expired">Expired</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M003','Ahmad Surya','ahmad@email.com','silver','expired','081234567892','Jl. Gatot Subroto No. 8')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M003','Ahmad Surya')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="gold" data-status="aktif">
+                                    <td>#M004</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#ffb800,#ff9500)">DL</div><div><div class="member-name">Dewi Lestari</div><div class="member-email">dewi@email.com</div></div></div></td>
+                                    <td><span class="badge-package gold">Gold</span></td>
+                                    <td>10 Mar 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M004','Dewi Lestari','dewi@email.com','gold','aktif','081234567893','Jl. Diponegoro No. 3')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M004','Dewi Lestari')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="platinum" data-status="aktif">
+                                    <td>#M005</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">FH</div><div><div class="member-name">Fajar Hidayat</div><div class="member-email">fajar@email.com</div></div></div></td>
+                                    <td><span class="badge-package platinum">Platinum</span></td>
+                                    <td>01 Apr 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M005','Fajar Hidayat','fajar@email.com','platinum','aktif','081234567894','Jl. Ahmad Yani No. 12')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M005','Fajar Hidayat')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="silver" data-status="aktif">
+                                    <td>#M006</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#fd79a8,#e84393)">SP</div><div><div class="member-name">Siti Permata</div><div class="member-email">siti@email.com</div></div></div></td>
+                                    <td><span class="badge-package silver">Silver</span></td>
+                                    <td>08 Apr 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M006','Siti Permata','siti@email.com','silver','aktif','081234567895','Jl. Pahlawan No. 7')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M006','Siti Permata')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="gold" data-status="expired">
+                                    <td>#M007</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#00cec9,#0984e3)">HR</div><div><div class="member-name">Hendra Rahmat</div><div class="member-email">hendra@email.com</div></div></div></td>
+                                    <td><span class="badge-package gold">Gold</span></td>
+                                    <td>12 Jan 2026</td>
+                                    <td><span class="badge-status expired">Expired</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M007','Hendra Rahmat','hendra@email.com','gold','expired','081234567896','Jl. Kartini No. 15')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M007','Hendra Rahmat')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-paket="silver" data-status="aktif">
+                                    <td>#M008</td>
+                                    <td><div class="member-info"><div class="member-avatar" style="background:linear-gradient(135deg,#55a3f8,#3867d6)">YP</div><div><div class="member-name">Yoga Pratama</div><div class="member-email">yoga@email.com</div></div></div></td>
+                                    <td><span class="badge-package silver">Silver</span></td>
+                                    <td>18 Apr 2026</td>
+                                    <td><span class="badge-status aktif">Aktif</span></td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="member-detail.html" class="btn-action view" title="Detail"><i class="bi bi-eye"></i></a>
+                                            <button class="btn-action edit" title="Edit" onclick="openEditModal('M008','Yoga Pratama','yoga@email.com','silver','aktif','081234567897','Jl. Pemuda No. 22')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action delete" title="Hapus" onclick="confirmDelete('M008','Yoga Pratama')"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div style="font-size:13px;color:var(--text-muted)">Menampilkan 1-8 dari 8 anggota</div>
+                <nav>
+                    <ul class="pagination pagination-custom mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="alert('Halaman 2 (data dummy)')">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="alert('Halaman berikutnya (data dummy)')">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal fade" id="memberModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border:none;border-radius:var(--radius)">
+                <div class="modal-header" style="border-bottom:1px solid var(--border-color);padding:20px 24px">
+                    <h5 class="modal-title" id="memberModalTitle">Tambah Anggota Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="padding:24px">
+                    <form id="memberForm">
+                        <input type="hidden" id="memberId">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="memberName" required placeholder="Masukkan nama lengkap">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="memberEmail" required placeholder="Masukkan email">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">No. Telepon</label>
+                                <input type="text" class="form-control" id="memberPhone" required placeholder="Masukkan no. telepon">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Paket Membership</label>
+                                <select class="form-select" id="memberPackage" required>
+                                    <option value="">Pilih Paket</option>
+                                    <option value="silver">Silver</option>
+                                    <option value="gold">Gold</option>
+                                    <option value="platinum">Platinum</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="memberStatus" required>
+                                    <option value="aktif">Aktif</option>
+                                    <option value="expired">Expired</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal Join</label>
+                                <input type="date" class="form-control" id="memberJoinDate" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Alamat</label>
+                                <textarea class="form-control" id="memberAddress" rows="2" placeholder="Masukkan alamat"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top:1px solid var(--border-color);padding:16px 24px">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMember()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content" style="border:none;border-radius:var(--radius)">
+                <div class="modal-body text-center" style="padding:32px">
+                    <div class="stat-icon danger mx-auto mb-3" style="width:56px;height:56px;font-size:24px"><i class="bi bi-trash"></i></div>
+                    <h5>Hapus Anggota?</h5>
+                    <p id="deleteMessage" style="font-size:14px;color:var(--text-secondary)">Apakah Anda yakin ingin menghapus anggota ini?</p>
+                    <div class="d-flex gap-2 justify-content-center mt-3">
+                        <button class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button class="btn btn-danger" onclick="deleteMember()">Ya, Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
