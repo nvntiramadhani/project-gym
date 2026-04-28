@@ -53,6 +53,16 @@ a { text-decoration:none; color:inherit; transition:var(--transition); }
     display:flex; width:100%; min-height:100vh;
 }
 
+.logo-img {
+    width: 60px;   /* kecilin dari 90px → 60px */
+    height: auto;
+}
+
+.login-img {
+    width: 120px;  /* atur sesuai selera */
+    height: auto;
+    object-fit: contain;
+}
 /* Left: Image Side */
 .login-image-side {
     flex:1; position:relative; display:flex; overflow:hidden;
